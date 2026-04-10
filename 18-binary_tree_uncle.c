@@ -8,18 +8,22 @@
  */
 binary_tree_t *binary_tree_uncle(binary_tree_t *node)
 {
-	/*
-	 * cas où l'oncle ne peut pas exister :
-	 * - le node n'existe pas
-	 * - le node n'a pas de parent
-	 * - le parent n'a pas de parent (donc pas de frère possible)
-	 */
+	binary_tree_t *grand_parent;
+
+	/* impossible d'avoir un oncle sans node, parent ou grand-parent */
 	if (node == NULL || node->parent == NULL || node->parent->parent == NULL)
 		return (NULL);
 
+	/* on récupère le grand-parent du node */
+	grand_parent = node->parent->parent;
+
 	/*
-	 * l'oncle est simplement le sibling du parent
-	 * on réutilise la fonction de la task précédente
+	 * si le parent est l'enfant gauche du grand-parent,
+	 * alors l'oncle est l'enfant droit
 	 */
-	return (binary_tree_sibling(node->parent));
+	if (grand_parent->left == node->parent)
+		return (grand_parent->right);
+
+	/* sinon l'oncle est l'enfant gauche */
+	return (grand_parent->left);
 }
